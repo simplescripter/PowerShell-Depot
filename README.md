@@ -1,3 +1,2 @@
-# PowerShell-Depot
-![PowerShell Icon](https://gist.github.com/Xainey/d5bde7d01dcbac51ac951810e94313aa#file-powershell-svg)
+# PowerShell-Depot![PowerShell Icon](https://upload.wikimedia.org/wikipedia/commons/2/2f/PowerShell_5.0_icon.png)
 A collection of unrelated PowerShell scripts
