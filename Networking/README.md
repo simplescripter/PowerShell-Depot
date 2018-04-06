@@ -1,2 +1,2 @@
 # Networking scripts
-/play cottoneyejoe
+:large_orange_diamond:
