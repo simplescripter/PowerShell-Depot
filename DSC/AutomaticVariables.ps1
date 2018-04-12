@@ -5,6 +5,7 @@
             EvaluationSoftware = @{
                 Name = "Test Software"
                 Version = "1.2.3"
+                ProductID = '000000-11-222-3333333'
             }
             NewString = "NewString"
         }
