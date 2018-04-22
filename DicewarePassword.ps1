@@ -1,13 +1,13 @@
 ﻿Function Get-DiceWarePassword {
     Param(
-            $filePath = "C:\Users\shawn.ELYSIUM\Documents\Scripting Reference\diceware.wordlist.txt",
+            $filePath = 'https://raw.githubusercontent.com/simplescripter/PowerShell-Depot/master/DicewarePasswordWordlist.txt',
             $numberOfWords = 5
         )
     $wordList = Import-CSV -Delimiter "`t" -Path $filePath -Header 'Number','Value'
     $hashList = @{}
     
     # Create a hash table of diceware words
-
+    Wor
     ForEach ($word in $wordList){
         $hashList.Add($word.Number,$word.Value)
     }
