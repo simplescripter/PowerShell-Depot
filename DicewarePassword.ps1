@@ -1,13 +1,16 @@
 ﻿Function Get-DiceWarePassword {
     Param(
-            $filePath = 'https://raw.githubusercontent.com/simplescripter/PowerShell-Depot/master/DicewarePasswordWordlist.txt',
+            $filePath = 'https://raw.githubusercontent.com/simplescripter/PowerShell-Depot/master/DicewarePasswordWordlist.txt', #$filepath is a local path or URL
             $numberOfWords = 5
         )
-    $wordList = Import-CSV -Delimiter "`t" -Path $filePath -Header 'Number','Value'
+    If ($filepath -match '^http'){
+        $wordList = (Invoke-WebRequest $filePath).Content | ConvertFrom-Csv -Delimiter "`t" -Header 'Number','Value'
+    }Else{
+        $wordList = Import-CSV -Delimiter "`t" -Path $filePath -Header 'Number','Value'
+    }
     $hashList = @{}
     
     # Create a hash table of diceware words
-    Wor
     ForEach ($word in $wordList){
         $hashList.Add($word.Number,$word.Value)
     }
