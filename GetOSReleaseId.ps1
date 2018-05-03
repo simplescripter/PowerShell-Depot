@@ -14,7 +14,7 @@
             $releaseIDValue = ($wmi.GetStringValue($HKLM,$key,$releaseID)).sValue
             $productNameValue = ($wmi.GetStringValue($HKLM,$key,$productName)).sValue
             $properties = @{
-                ComputerName = $computerName
+                ComputerName = $computer
                 ProductName = $productNameValue
                 ReleaseID = $releaseIDValue
             }
