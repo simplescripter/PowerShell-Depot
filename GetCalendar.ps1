@@ -1,36 +1,34 @@
-﻿# This function was created by former student Alex Nelson
+﻿Function Get-Calendar {  
 
-Function get-Calendar {  
+    $form = New-Object Windows.Forms.Form  
+    $form.Text = "Select the date ranges from the Calendar and press Enter"  
+    $form.Size = New-Object Drawing.Size @(656,639)  
 
-  $form = new-object Windows.Forms.Form  
-  $form.text = "Select the date ranges from the Calendar"  
-  $form.Size = new-object Drawing.Size @(656,639)  
+    # Create a "hidden" SelectButton to handle Enter Key 
 
-  # Make "Hidden" SelectButton to handle Enter Key 
+    $btnSelect = New-Object System.Windows.Forms.Button 
+    $btnSelect.Size = "1,1" 
+    $btnSelect.add_Click({  
+    $form.Close()  
+    })  
+    $form.Controls.Add($btnSelect )  
+    $form.AcceptButton =  $btnSelect 
 
-  $btnSelect = new-object System.Windows.Forms.Button 
-  $btnSelect.Size = "1,1" 
-  $btnSelect.add_Click({  
-    $form.close()  
-  })  
-  $form.Controls.Add($btnSelect )  
-  $form.AcceptButton =  $btnSelect 
+    # Add Calendar  
 
-  # Add Calendar  
+    $calendar = New-Object System.Windows.Forms.MonthCalendar  
+    $calendar.ShowWeekNumbers = $false  
+    $calendar.MaxSelectionCount = 356 
+    $calendar.Dock = 'Fill'  
+    $form.Controls.Add($calendar)  
 
-  $cal = new-object System.Windows.Forms.MonthCalendar  
-  $cal.ShowWeekNumbers = $false  
-  $cal.MaxSelectionCount = 356 
-  $cal.Dock = 'Fill'  
-  $form.Controls.Add($cal)  
+    # Display the form 
 
-  # Show Form 
+    $form.Add_Shown({$form.Activate()})   
+    [void]$form.Showdialog()  
 
-  $Form.Add_Shown({$form.Activate()})   
-  [void]$form.showdialog()  
+    # Return Start and End date  
 
-  # Return Start and end date  
-
-return $cal.SelectionRange
+    Return $calendar.SelectionRange
 
 }  
