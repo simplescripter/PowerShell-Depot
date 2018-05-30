@@ -1,8 +1,21 @@
 ﻿Function Get-AzureVmSizesByLocation {
+<#
+    .SYNOPSIS
+        Given a VM family, displays the Azure regions where that VM may be hosted  
+
+    .EXAMPLE
+        Get-AzureVmSizesByLocation -vmSeries Esv3 | Sort Size | Format-Table Location -GroupBy Size
+#>
+
     Param(
         [ValidateSet('Dv3','Dsv3','Ev3','Esv3')]
         [string]$vmSeries
     )
+    Try{
+        Get-AzureRmContext -ErrorAction Stop 
+    }Catch{
+        Add-AzureRmAccount
+    }
     If(-not ($vmSeries -eq $null)){
         Switch ($vmSeries){
             'Dv3' {$pattern = '\w+_D\d+_v3$'}
@@ -29,4 +42,3 @@
         }
     }
 }
-Get-AzureVmSizesByLocation -vmSeries Esv3 | Sort Size | Format-Table Location -GroupBy Size
