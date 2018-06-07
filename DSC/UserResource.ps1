@@ -16,7 +16,7 @@ Configuration UserResource {
 $configData = @{
     AllNodes = @(
         @{
-            NodeName = 'StudentServer2' # cannot be an asterisk
+            NodeName = 'StudentServer2' # cannot be an asterisk unless 1 or more additional NodeName hash tables for specific nodes are added
             PSDscAllowPlainTextPassword = $true
         }
     )
