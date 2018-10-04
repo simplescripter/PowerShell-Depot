@@ -7,5 +7,3 @@ ForEach($computer in $computers){
     Copy-Item -Path $folderPath -Recurse -Force -Destination Z:\
     Remove-PSDrive -Name Z -Force
 }
-
-#test
