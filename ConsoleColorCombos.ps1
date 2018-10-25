@@ -1,5 +1,8 @@
-﻿# Possible console text and background colors:
-$colors = 'Black',
+﻿# Displays the possible combinations of console colors, foreground and background
+
+# Possible console text and background colors:
+$colors = 
+    'Black',
     'Blue',
     'Cyan',
     'DarkBlue',
