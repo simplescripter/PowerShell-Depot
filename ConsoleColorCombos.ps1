@@ -18,10 +18,10 @@ $colors =
     'Red',
     'White',
     'Yellow'
-
+    
     ForEach ($foregroundColor in $colors){
         ForEach ($backgroundColor in $colors){
-            Write-Host "$foregroundColor on $backgroundColor" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            Write-Host "$i  $foregroundColor on $backgroundColor" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
         }
     }
 
