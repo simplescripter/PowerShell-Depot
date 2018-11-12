@@ -21,6 +21,7 @@
     $quote = $quote -replace '</[abi]>',''
     $quote = $quote -replace '<i>',''
     $quote = $quote -replace '\n\s*\n',"`n"
+    $quote = $quote -replace '<br>',''
     $quote = $quote -split "`n" | Select -Skip 1
     For($i=0;$i -le $numberOfQuotes - 1;$i++){
         Write-Output $quote[$i] `n 
