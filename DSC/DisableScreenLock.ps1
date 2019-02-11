@@ -1,6 +1,6 @@
 Configuration "Screen"
 {
-   Import-DscResource –ModuleName PSDesiredStateConfiguration
+   Import-DscResource -ModuleName PSDesiredStateConfiguration
 Node localhost
   {
     Registry 'ACSettingIndex'

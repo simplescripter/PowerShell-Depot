@@ -1,8 +1,19 @@
-﻿Try{
+﻿# Look for Az module and, if present, load the equivalent -AzureRm aliases:
+
+If(Get-Module -ListAvailable Az.*){
+    Enable-AzureRmAlias
+}
+
+# Check for Azure login:
+
+Try{
     Get-AzureRmContext -ErrorAction Stop 
 }Catch{
     Add-AzureRmAccount
 }
+
+# Build an Out-Gridview pipeline for selection of an Azure Marketplace VM image:
+
 $location = Get-AzureRmLocation | Out-GridView -PassThru -Title "SELECT A LOCATION AND CLICK OK" | Select -ExpandProperty Location
 $publisher = Get-AzureRmVMImagePublisher -Location $location | Out-GridView -PassThru -Title "SELECT A PUBLISHER AND CLICK OK" | Select -ExpandProperty PublisherName
 $offer = Get-AzureRmVMImageOffer -Location $location -PublisherName $publisher | Out-GridView -PassThru -Title "SELECT AN OFFER AND CLICK OK" | Select -ExpandProperty Offer 
