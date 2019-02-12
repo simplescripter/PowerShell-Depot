@@ -7,7 +7,7 @@ Param(
 )
 
 If(-not (Test-Path $dirPath)){
-    New-Item "C:\DSC" -ItemType Directory
+    New-Item $dirPath -ItemType Directory
 }
 <#  New-xSelfSignedDscEncryptionCertificate doesn't work with older versions of New-SelfSignedCertificate
 
