@@ -95,7 +95,7 @@ Configuration LocalAccounts {
           GroupName = "ExampleGroup"
           Members = "Bob","BlueBuffalo\Administrator"
           Credential = (Get-Credential -Message 'Enter domain user credentials')
-          #DependsOn = "[User]UserResourceExample"
+          DependsOn = "[User]UserResourceExample"
         }
     }
 }
