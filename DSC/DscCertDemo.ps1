@@ -2,7 +2,7 @@
 # Run from StudentServer
 
 Param(
-    [string]$computerName = 'StudentServer2',
+    [string]$computerName = 'StudentServer',
     [string]$dirPath = 'C:\DSC'
 )
 
