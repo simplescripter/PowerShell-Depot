@@ -12,7 +12,7 @@ If(-not (Test-Path $dirPath)){
 
 # Grab xDscUtils if necessary
 If(-not (Get-Module xDscUtils -ListAvailable)){
-    Install-Module xDscUtils
+    Install-Module xDscUtils -Force
 }
 
 # Use New-xSelfSignedDscEncryptionCertificate to generate a self-signed cert for the local host
