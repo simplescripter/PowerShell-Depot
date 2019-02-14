@@ -1,43 +1,42 @@
 # For a DSC Demo using 55202 Lab on Demand VMs
-# Run from StudentServer
+# Run from StudentServer2
 
 Param(
-    [string]$computerName = 'StudentServer',
-    [string]$dirPath = 'C:\DSC'
+    [string]$computerName = 'StudentServer2',
+    [string]$dirPath = 'C:\CERTDEMO'
 )
 
 If(-not (Test-Path $dirPath)){
     New-Item $dirPath -ItemType Directory
 }
-
-# TODO: encryptdecrypt module requires PowerShell 5.1, but the 55202 lab environment run 5...
-
-# Grab EncryptDecrypt if necessary. New-SelfSignedCertificate before Windows 10/Server 2016 doesn't support
-If(-not (Get-Module encryptdecrypt -ListAvailable)){
-    Install-Module encryptdecrypt -Force
+# Grab Adam Bertram's New-SelfSignedCertificateEx if necessary (New-SelfSignedCertificate before Windows 10/Server 2016 doesn't support
+# the necessary parameters for a DSC certicate):
+If(-not (Test-Path "$dirpath\New-SelfSignedCertificateEx.ps1")){
+    $pathToScript = "https://raw.githubusercontent.com/adbertram/Random-PowerShell-Work/f88241b7942e343eeef08ab583212e682df89eb3/Security/New-SelfSignedCertificateEx.ps1"
+    Invoke-WebRequest -Uri $pathToScript -OutFile C:\CERTDEMO\New-SelfSignedCertificateEx.ps1
 }
 
 # Define the parameters required for a DSC cert:
 $certParams = @{
 	'Subject' = "CN=$computerName"
-	'SubjectAlternativeName' = $computerName
-	'EnhancedKeyUsage' = '1.3.6.1.4.1.311.80.1' # Document Encryption key usage OID
+	'SAN' = $computerName
+	'EnhancedKeyUsage' = 'Document Encryption'
 	'KeyUsage' = 'KeyEncipherment', 'DataEncipherment'
-	'FriendlyName' = 'DSC Encryption Certificate'
+	'FriendlyName' = 'DSC Encryption Certifificate'
 	'StoreLocation' = 'LocalMachine'
 	'StoreName' = 'My'
 	'ProviderName' = 'Microsoft Enhanced Cryptographic Provider v1.0'
-	 #'PassThru' = $true
+	'PassThru' = $true
 	'KeyLength' = 2048
 	'AlgorithmName' = 'RSA'
 	'SignatureAlgorithm' = 'SHA256'
 }
 # Use New-SelfSignedCertificateEx to generate a self-signed cert for the local host
-New-SelfSignedCertificateEx @certParams
-$cert = Get-ChildItem Cert:\LocalMachine\My -DocumentEncryptionCert
+. "$dirPath\New-SelfSignedCertificateEx.ps1"
+$cert = New-SelfSignedCertificateEx @certParams
 
 # Export the certificate for the MOF compilation system
-Export-Certificate -FilePath $dirPath\$computerName.cer -Cert $cert
+$cert | Export-Certificate -FilePath "$dirPath\$computerName.cer"
 
 # Configuration Data section
 $configData = @{
@@ -47,7 +46,7 @@ $configData = @{
         }
         @{
             NodeName = $computerName
-            CertificateFile = "C:\DSC\$computerName.cer" # local path where MOF is being compiled
+            CertificateFile = "$dirPath\$computerName.cer" # local path where MOF is being compiled
             CertificateID = $cert.Thumbprint
         }
     )
@@ -89,3 +88,8 @@ Configuration LocalAccounts {
 }
 
 LocalAccounts -OutputPath $dirPath -ConfigurationData $configData
+
+Function CleanUp {
+    del C:\CERTDEMO\*
+    del Cert:\LocalMachine\My\*
+}
