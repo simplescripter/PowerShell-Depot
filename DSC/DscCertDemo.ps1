@@ -11,6 +11,7 @@ If(-not (Test-Path $dirPath)){
 }
 # Grab Adam Bertram's New-SelfSignedCertificateEx if necessary (New-SelfSignedCertificate before Windows 10/Server 2016 doesn't support
 # the necessary parameters for a DSC certicate):
+
 If(-not (Test-Path "$dirpath\New-SelfSignedCertificateEx.ps1")){
     $pathToScript = "https://raw.githubusercontent.com/adbertram/Random-PowerShell-Work/f88241b7942e343eeef08ab583212e682df89eb3/Security/New-SelfSignedCertificateEx.ps1"
     Invoke-WebRequest -Uri $pathToScript -OutFile C:\CERTDEMO\New-SelfSignedCertificateEx.ps1
@@ -88,8 +89,3 @@ Configuration LocalAccounts {
 }
 
 LocalAccounts -OutputPath $dirPath -ConfigurationData $configData
-
-Function CleanUp {
-    del C:\CERTDEMO\*
-    del Cert:\LocalMachine\My\*
-}
