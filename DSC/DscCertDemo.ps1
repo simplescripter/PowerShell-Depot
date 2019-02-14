@@ -9,47 +9,32 @@ Param(
 If(-not (Test-Path $dirPath)){
     New-Item $dirPath -ItemType Directory
 }
-<#  New-xSelfSignedDscEncryptionCertificate doesn't work with older versions of New-SelfSignedCertificate
-
-# Grab xDscUtils if necessary
-If(-not (Get-Module xDscUtils -ListAvailable)){
-    Install-Module xDscUtils
+# Grab EncryptDecrypt if necessary. New-SelfSignedCertificate before Windows 10/Server 2016 doesn't support
+If(-not (Get-Module encryptdecrypt -ListAvailable)){
+    Install-Module encryptdecrypt -Force
 }
 
-# Use New-xSelfSignedDscEncryptionCertificate to generate a self-signed cert for the local host
-$cert = New-xSelfSignedDscEncryptionCertificate -EmailAddress DscCertDemo -ValidityYears 5 -ExportFilePath C:\$computerName.cer
-#>
+# Define the parameters required for a DSC cert:
+$certParams = @{
+	'Subject' = "CN=$computerName"
+	'SubjectAlternativeName' = $computerName
+	'EnhancedKeyUsage' = '1.3.6.1.4.1.311.80.1' # Document Encryption key usage OID
+	'KeyUsage' = 'KeyEncipherment', 'DataEncipherment'
+	'FriendlyName' = 'DSC Encryption Certificate'
+	'StoreLocation' = 'LocalMachine'
+	'StoreName' = 'My'
+	'ProviderName' = 'Microsoft Enhanced Cryptographic Provider v1.0'
+	 #'PassThru' = $true
+	'KeyLength' = 2048
+	'AlgorithmName' = 'RSA'
+	'SignatureAlgorithm' = 'SHA256'
+}
+# Use New-SelfSignedCertificateEx to generate a self-signed cert for the local host
+New-SelfSignedCertificateEx @certParams
+$cert = Get-ChildItem Cert:\LocalMachine\My -DocumentEncryptionCert
 
-# Instead of New-xSelfSignedDscEncryptionCertificate, use Microsoft's technique documented with 
-# Protect-CmsMessage:
-
-    # Create .INF file for certreq
-
-{[Version]
-Signature = "$Windows NT$"
-
-[Strings]
-szOID_ENHANCED_KEY_USAGE = "2.5.29.37"
-szOID_DOCUMENT_ENCRYPTION = "1.3.6.1.4.1.311.80.1"
-
-[NewRequest]
-Subject = "cn=DscCertDemo"
-MachineKeySet = false
-KeyLength = 2048
-KeySpec = AT_KEYEXCHANGE
-HashAlgorithm = Sha1
-Exportable = true
-RequestType = Cert
-KeyUsage = "CERT_KEY_ENCIPHERMENT_KEY_USAGE | CERT_DATA_ENCIPHERMENT_KEY_USAGE"
-ValidityPeriod = "Years"
-ValidityPeriodUnits = "1000"
-
-[Extensions]
-%szOID_ENHANCED_KEY_USAGE% = "{text}%szOID_DOCUMENT_ENCRYPTION%"
-} | Out-File -FilePath "$($dirPath)\$($computerName)_DocumentEncryption.inf"
-
-# After you have created your certificate file, run the following command to add the certificate file to the certificate store.Now you are ready to encrypt and decrypt content with the next two examples.
-certreq -new "$($dirPath)\$($computerName)_DocumentEncryption.inf" "$($dirPath)\$($computerName).cer"
+# Export the certificate for the MOF compilation system
+Export-Certificate -FilePath $dirPath\$computerName.cer -Cert $cert
 
 # Configuration Data section
 $configData = @{
