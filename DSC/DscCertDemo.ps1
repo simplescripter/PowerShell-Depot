@@ -9,6 +9,9 @@ Param(
 If(-not (Test-Path $dirPath)){
     New-Item $dirPath -ItemType Directory
 }
+
+# TODO: encryptdecrypt module requires PowerShell 5.1, but the 55202 lab environment run 5...
+
 # Grab EncryptDecrypt if necessary. New-SelfSignedCertificate before Windows 10/Server 2016 doesn't support
 If(-not (Get-Module encryptdecrypt -ListAvailable)){
     Install-Module encryptdecrypt -Force
