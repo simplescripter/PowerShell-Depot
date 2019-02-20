@@ -11,6 +11,13 @@
         [ValidateSet('Dv3','Dsv3','Ev3','Esv3')]
         [string]$vmSeries
     )
+
+    # Look for Az module and, if present, load the equivalent -AzureRm aliases:
+    If(Get-Module -ListAvailable Az.*){
+        Enable-AzureRmAlias
+    }
+
+    # Check for Azure login:
     Try{
         Get-AzureRmContext -ErrorAction Stop 
     }Catch{
@@ -25,12 +32,19 @@
         }
     }
     $locations = Get-AzureRmLocation | Select -ExpandProperty location
+    $locationCount = 0
     ForEach ($location in $locations){
+        $locationCount++
+        Write-Progress -Activity "Searching location:" -Status $location -PercentComplete ($locationCount/$locations.count * 100)
         $list = @()
-        If(-not ($vmSeries -eq $null)){
-            $list += Get-AzureRmVmSize -Location $location | Where-Object {$_.Name -cmatch $pattern} | Select -ExpandProperty Name
-        }Else{
-            $list += Get-AzureRmVmSize -Location $location | Select -ExpandProperty Name
+        Try{
+            If(-not ($vmSeries -eq $null)){
+                $list += Get-AzureRmVmSize -Location $location -ErrorAction Stop | Where-Object {$_.Name -cmatch $pattern} | Select -ExpandProperty Name
+            }Else{
+                $list += Get-AzureRmVmSize -Location $location -ErrorAction Stop | Select -ExpandProperty Name
+            }
+        }Catch{
+            
         }
         ForEach ($size in $list){
             $properties = @{
