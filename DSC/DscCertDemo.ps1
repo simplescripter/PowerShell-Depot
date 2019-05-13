@@ -1,5 +1,6 @@
 # For a DSC Demo using 55202 Lab on Demand VMs
-# Run from StudentServer2
+# Run from StudentServer2.  If you run the script from any other system, you'll need to import the certificate 
+# into the destination system's local machine certificate store before the configuration can be pushed or pulled
 
 Param(
     [string]$computerName = 'StudentServer2',
