@@ -13,16 +13,31 @@ Function Get-OSReleaseID {
         $releaseID = "ReleaseId"
         $productName = "ProductName"
         ForEach($computer in $computerName){
-            $wmi = [wmiclass]"\\$computer\root\default:stdRegProv"
-            $releaseIDValue = ($wmi.GetStringValue($HKLM,$key,$releaseID)).sValue
-            $productNameValue = ($wmi.GetStringValue($HKLM,$key,$productName)).sValue
-            $properties = @{
-                ComputerName = $computer
-                ProductName = $productNameValue
-                ReleaseID = $releaseIDValue
+            $ok = $true
+            Try{
+                $wmi = [wmiclass]"\\$computer\root\default:stdRegProv"
+            }Catch{
+                $ok = $false
             }
-            $return = New-Object -TypeName PSObject -Property $properties
-            Write-Output $return
+            If($ok){
+                $releaseIDValue = ($wmi.GetStringValue($HKLM,$key,$releaseID)).sValue
+                $productNameValue = ($wmi.GetStringValue($HKLM,$key,$productName)).sValue
+                $properties = @{
+                    ComputerName = $computer
+                    ProductName = $productNameValue
+                    ReleaseID = $releaseIDValue
+                }
+                $return = New-Object -TypeName PSObject -Property $properties
+                Write-Output $return
+            }Else{
+                $properties = @{
+                    ComputerName = $computer
+                    ProductName = 'UNKNOWN'
+                    ReleaseID = 'UNKNOWN'
+                }
+                $return = New-Object -TypeName PSObject -Property $properties
+                Write-Output $return
+            }
         }
     }
 }
