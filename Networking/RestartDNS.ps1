@@ -9,7 +9,7 @@ plant,server
 
 etc.
 #>
-$list = Import-CSV "C:\Users\shawn.ELYSIUM\Documents\dnslist.txt"
+$list = Import-CSV "E:\dns.txt"
 $i = $null
 $numberOfPlants = 10
 $delayBetweenPlants = 300 # in seconds
