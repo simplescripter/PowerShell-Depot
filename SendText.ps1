@@ -56,4 +56,3 @@ Function Send-Text {
     Send-MailMessage @mailValues
 }
 
-Send-Text -provider Verizon -smtpServer smtp.mail.yahoo.com -smtpPort 587 -smtpUserName 'daemon.childe@yahoo.com' -smtpPassword '$$lOKk@Y4c!W' -cellNumberToText 3035226248 -textMessage "A message from my Send-Text function!"
