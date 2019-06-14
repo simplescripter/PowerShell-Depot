@@ -23,7 +23,7 @@ Function Send-TextMessage {
 
         [string]$smtpUserName,
 
-        $smtpPassword,
+        $smtpPassword, # Can't cast as [string]; converting to securestring will fail
 
         [Parameter(Mandatory=$true)] 
         [int64]$cellNumberToText,
