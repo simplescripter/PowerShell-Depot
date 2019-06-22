@@ -1,7 +1,7 @@
 # may need to reduce security of the mail account to authenticate to the SMTP server.  For Yahoo, Account Security --> Allow apps that use less secure sign in
 Function Send-TextMessage {
     Param(
-    [Parameter(Mandatory=$true)]    
+    [Parameter(Mandatory=$true)]
     [ValidateSet(
             'Verizon',
             'ATT',
@@ -15,17 +15,17 @@ Function Send-TextMessage {
         )]
         [string]$provider,
 
-        [Parameter(Mandatory=$true)] 
+        [Parameter(Mandatory=$true)]
         [string]$smtpServer,
 
-        [Parameter(Mandatory=$true)] 
+        [Parameter(Mandatory=$true)]
         [int]$smtpPort,
 
         [string]$smtpUserName,
 
         $smtpPassword, # Can't cast as [string]; converting to securestring will fail
 
-        [Parameter(Mandatory=$true)] 
+        [Parameter(Mandatory=$true)]
         [int64]$cellNumberToText,
 
         [string]$textMessage
@@ -46,7 +46,7 @@ Function Send-TextMessage {
     $mailValues = @{
         From = $smtpUserName
         To = "$cellNumberToText@$domain"
-        Subject = 'Send-Text'
+        Subject = (Get-Date)
         Body = $textMessage
         SmtpServer = $smtpServer
         Port = $smtpPort
