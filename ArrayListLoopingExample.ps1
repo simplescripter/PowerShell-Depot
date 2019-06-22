@@ -9,6 +9,6 @@ Do {
             $computerList.Remove($computer)
         }
     }
-    If($computerList.Count -gt 0){Sleep 5}
+    If($computerList.Count -gt 0){Start-Sleep 5}
 }Until($computerList.Count -eq 0)
 Write-Host 'All systems in $computerList have been contacted.' -ForegroundColor DarkCyan -BackgroundColor Yellow

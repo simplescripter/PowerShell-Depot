@@ -1,4 +1,4 @@
-﻿cls
+﻿Clear-Host
 $message = Read-Host "Enter your message"
 $mixedWord = $null
 $words = $message.split()
