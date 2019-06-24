@@ -59,7 +59,7 @@ Function Send-TextMessage {
         [Parameter(Mandatory=$true)]
         [int64]$cellNumberToText,
 
-        [string]$subject = $(Get-Date),
+        [string]$subject,
 
         [string]$textMessage
     )
