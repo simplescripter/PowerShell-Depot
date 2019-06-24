@@ -59,7 +59,7 @@ Function Send-TextMessage {
         [Parameter(Mandatory=$true)]
         [int64]$cellNumberToText,
 
-        [string]$subject,
+        [string]$subject = ' ',
 
         [string]$textMessage
     )
@@ -79,7 +79,7 @@ Function Send-TextMessage {
     $mailValues = @{
         From = $smtpUserName
         To = "$cellNumberToText@$domain"
-        Subject = (Get-Date)
+        Subject = $subject
         Body = $textMessage
         SmtpServer = $smtpServer
         Port = $smtpPort
