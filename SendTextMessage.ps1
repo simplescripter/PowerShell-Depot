@@ -23,6 +23,8 @@ Password for SMTP user
 The cell number you want to text.  Must be on the provider's network defined by the "provider" parameter
 .PARAMETER subject
 "Subject" of the text.  The subject might appear in parenthesis to the left of the text message, or it might not appear in the resulting text
+Send-MailMessage doesn't allow an empty string or null for the subject line, but a single whitespace (the default for Send-TextMessage) will
+often result in the subject line being removed from the text
 .PARAMETER textMessage
 The text message
 .EXAMPLE
