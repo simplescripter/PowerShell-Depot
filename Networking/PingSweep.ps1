@@ -1,8 +1,8 @@
 ﻿Workflow PingSweep{
     $computers = @()
-    For ($i = 1; $i -le 254; $i++){$computers += "192.168.1.$i"}
+    For ($i = 1; $i -le 254; $i++){$computers += "192.168.0.$i"}
     ForEach -Parallel ($computer in $computers){
-        If(Test-Connection -computerName $computer -count 1 -quiet){
+        If(Test-NetConnection -computerName $computer -InformationLevel Quiet -WarningAction SilentlyContinue){
             Write-Output -InputObject "$computer,ONLINE"
         }else{
             Write-Output -InputObject "$computer,OFFLINE"
