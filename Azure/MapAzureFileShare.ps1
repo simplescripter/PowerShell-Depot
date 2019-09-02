@@ -19,11 +19,16 @@ Function Map-AzureDrive{
         [Parameter(Mandatory=$true)]
         [string]$shareName,
 
-        [string]$driveLetter = 'Z'
+        [string]$driveLetter = 'Z',
+
+        [switch]$hideInExplorer
     )
     $secureKey = ConvertTo-SecureString -String $acctKey -AsPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential -ArgumentList "Azure\$storageAcctName", $secureKey
+    If($hideInExplorer){
+        $reconnect = $false
+    }
     New-PSDrive -Name $driveLetter -PSProvider FileSystem `
         -Root "\\$storageAcctName.file.core.windows.net\$shareName" `
-        -Credential $credential -Persist -Scope Global
+        -Credential $credential -Persist:$reconnect -Scope Global
 }

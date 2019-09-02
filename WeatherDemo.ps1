@@ -14,7 +14,7 @@ $uri = "api.openweathermap.org/data/2.5/weather?id=$littletonCityID&mode=json&AP
 
 # Forecast by city ID:
 $forecastURI = "api.openweathermap.org/data/2.5/forecast?id=$littletonCityID&mode=json&APPID=$apiKey"
-$results = Invoke-WebRequest $uri
+$results = Invoke-RestMethod $uri
        # or
 #$results = Invoke-WebRequest $forecastURI
 
