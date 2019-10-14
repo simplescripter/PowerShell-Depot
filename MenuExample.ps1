@@ -15,8 +15,9 @@ x = Exit this menu
 "@
 
 Do{
+    cmd /c color 0D
     $selection = Read-Host -Prompt $menu
-    Clear
+    Clear-Host
     Switch ($selection){
         p {
             Get-Process | Sort-Object WS -Descending | Select-Object -first 10 | Format-Table
@@ -27,7 +28,7 @@ Do{
             pause
         }
         s {
-            Get-Service | Where Status -eq Running | Format-Table
+            Get-Service | Where-Object Status -eq Running | Format-Table
             pause
         }
         h {
@@ -39,4 +40,5 @@ Do{
         }
     }
 }Until ($selection -eq "x")
-Clear
+cmd /c color 56
+Clear-Host
