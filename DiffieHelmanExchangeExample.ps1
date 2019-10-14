@@ -13,6 +13,6 @@ $iYb = ([math]::Pow($iG,$iXb)) % $iP
 Write-Host "Student1 Ya = $iYa `n`nOpenly exchange this number with Student2."
 Write-Host "Student2 Yb = $iYb `n`nOpenly exchange this number with Student1."
 
-Write-Host "Now you can compute your secret key."
+Write-Host "Now you can compute your secret key.`n"
 Write-Host "Student1 key formula is (Yb^Xa) Mod P `n`t`t = " ([math]::Pow($iYb,$iXa)) % $iP "`n`t`t = " (([math]::Pow($iYb,$iXa)) % $iP)
 Write-Host "Student2 key formula is (Ya^Xb) Mod P `n`t`t = " ([math]::Pow($iYa,$iXb)) % $iP "`n`t`t = " (([math]::Pow($iYa,$iXb)) % $iP)
