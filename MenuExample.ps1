@@ -40,5 +40,9 @@ Do{
         }
     }
 }Until ($selection -eq "x")
-cmd /c color 56
+Switch ($PSVersionTable.PSEdition){
+    'Core' {cmd /c color 07}
+    'Desktop' {cmd /c color 56}
+    Default {cmd /c color 56}
+}
 Clear-Host
