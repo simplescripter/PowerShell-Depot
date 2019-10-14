@@ -15,7 +15,7 @@ x = Exit this menu
 "@
 
 Do{
-    cmd /c color 0D
+    cmd /c color 71
     $selection = Read-Host -Prompt $menu
     Clear-Host
     Switch ($selection){
