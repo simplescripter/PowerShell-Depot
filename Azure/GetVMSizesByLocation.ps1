@@ -1,15 +1,25 @@
-﻿Function Get-AzureVmSizesByLocation {
+﻿Function Get-AzureVmSizeByLocation {
 <#
     .SYNOPSIS
-        Given a VM family, displays the Azure regions where that VM may be hosted  
+        Given a VM size, displays the Azure regions where that VM may be hosted in the current subscription  
 
     .EXAMPLE
-        Get-AzureVmSizesByLocation -vmSeries Esv3 | Sort Size | Format-Table Location -GroupBy Size
+        Get-AzureVmSizeByLocation -vmSize Standard_DS1_v2 | Sort Size | Format-Table LocationAvailable -GroupBy Size
+
+    .EXAMPLE
+        Get-AzureVmSizeByLocation -vmSize Standard_D2_v2 -location westus
 #>
 
     Param(
-        [ValidateSet('Dv3','Dsv3','Ev3','Esv3')]
-        [string]$vmSeries
+        [ValidateSet(            # common sizes used in MOC AZ-103T00
+            'Standard_DS1_v2',
+            'Standard_DS2_v2',
+            'Standard_D1_v2',
+            'Standard_D2_v2'
+        )]
+        [string]$vmSize,
+
+        [string]$location        # optional
     )
 
     # Look for Az module and, if present, load the equivalent -AzureRm aliases:
@@ -19,40 +29,45 @@
 
     # Check for Azure login:
     Try{
-        Get-AzureRmContext -ErrorAction Stop 
+        $subscriptionID = Get-AzureRmContext -ErrorAction Stop | Select-Object -ExpandProperty Subscription | Select-Object -ExpandProperty ID
     }Catch{
         Add-AzureRmAccount
+        $subscriptionID = Get-AzureRmContext -ErrorAction Stop | Select-Object -ExpandProperty Subscription | Select-Object -ExpandProperty ID
     }
-    If(-not ($vmSeries -eq $null)){
-        Switch ($vmSeries){
-            'Dv3' {$pattern = '\w+_D\d+_v3$'}
-            'Dsv3' {$pattern = '\w+_D\d+s_v3$'}
-            'Ev3' {$pattern = '\w+_E\d+_v3$'}
-            'Esv3' {$pattern = '\w+_E\d+s_v3$'}
+    
+    $locations = Get-AzureRmLocation | Select-Object -ExpandProperty location
+    If($PSBoundParameters.ContainsKey('location')){
+        If($locations -contains $location){
+            $locations = $location
+        }Else{
+            throw "INVALID LOCATION"
         }
     }
-    $locations = Get-AzureRmLocation | Select-Object -ExpandProperty location
     $locationCount = 0
+    $allVmSKUs = Get-AzComputeResourceSku | Where-Object {$_.ResourceType -like 'virtualMachines' -and $_.Restrictions.ReasonCode -ne 'NotAvailableForSubscription'}
     ForEach ($location in $locations){
         $locationCount++
         Write-Progress -Activity "Searching location.." -Status $location -PercentComplete ($locationCount/$locations.count * 100)
         $list = @()
         Try{
-            If(-not ($vmSeries -eq $null)){
-                $list += Get-AzureRmVmSize -Location $location -ErrorAction Stop | Where-Object {$_.Name -cmatch $pattern} | Select-Object -ExpandProperty Name
+            If(-not ($vmSize -eq $null)){
+                $list += $allVmSKUs | 
+                    Where-Object {$_.Locations -contains $location -and $_.Name -match $vmSize} | Select-Object -ExpandProperty Name
             }Else{
-                $list += Get-AzureRmVmSize -Location $location -ErrorAction Stop | Select -ExpandProperty Name
+                $list += $allVmSKUs | 
+                    Where-Object {$_.Locations -contains $location} | Select-Object -ExpandProperty Name
             }
         }Catch{
             
         }
+        $objList = @()
         ForEach ($size in $list){
             $properties = @{
                 Size = $size
-                Location = $location
+                LocationAvailable = $location
             }
-            $obj = New-Object -TypeName psobject -Property $properties
-            Write-Output $obj
+            $objList += New-Object -TypeName psobject -Property $properties
         }
+        Write-Output $objList
     }
 }
