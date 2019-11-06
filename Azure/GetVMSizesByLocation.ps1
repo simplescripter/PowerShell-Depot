@@ -29,7 +29,7 @@
 
     # Check for Azure login:
     Try{
-        Get-AzureRmContext -ErrorAction Stop
+        Get-AzureRmContext -ErrorAction Stop | Out-Null
     }Catch{
         Add-AzureRmAccount
     }
