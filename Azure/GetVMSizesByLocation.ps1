@@ -4,10 +4,16 @@
         Given a VM size, displays the Azure regions where that VM may be hosted in the current subscription  
 
     .EXAMPLE
+        Get-AzureVmSizeByLocation -vmSize Standard_D1_v2
+
+    .EXAMPLE
         Get-AzureVmSizeByLocation -vmSize Standard_DS1_v2 | Sort Size | Format-Table LocationAvailable -GroupBy Size
 
     .EXAMPLE
-        Get-AzureVmSizeByLocation -vmSize Standard_D2_v2 -location westus
+        Get-AzureVmSizeByLocation -vmSize Standard_D2_v2 -location westus2
+
+    .EXAMPLE
+        Get-AzureVmSizeByLocation | Sort locationAvailable | Format-Table Size -GroupBy locationAvailable
 #>
 
     Param(
