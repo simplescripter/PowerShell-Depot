@@ -29,10 +29,9 @@
 
     # Check for Azure login:
     Try{
-        $subscriptionID = Get-AzureRmContext -ErrorAction Stop | Select-Object -ExpandProperty Subscription | Select-Object -ExpandProperty ID
+        Get-AzureRmContext -ErrorAction Stop
     }Catch{
         Add-AzureRmAccount
-        $subscriptionID = Get-AzureRmContext -ErrorAction Stop | Select-Object -ExpandProperty Subscription | Select-Object -ExpandProperty ID
     }
     
     $locations = Get-AzureRmLocation | Select-Object -ExpandProperty location
