@@ -22,7 +22,7 @@
             'Standard_DS2_v2',
             'Standard_D1_v2',
             'Standard_D2_v2',
-            'Standard_D2s_v3'
+            'Standard_D2s_v3' # used in Module 9
         )]
         [string]$vmSize,
 
