@@ -16,7 +16,8 @@ The port number of the SMTP server.  Traditional SMTP is port 25, but most serve
 and SMTP over TLS is usually defined on port 587
 .PARAMETER smtpUserName
 The user name with permission to use the SMTP server.  You may need to reduce the security of the mail account to authenticate to the SMTP server.  For example, 
-you can adjust Yahoo account settings under Account Security --> Allow apps that use less secure sign in
+you can adjust Yahoo account settings under Account Security --> Allow apps that use less secure sign in.  Alternatively, you may be able to generate an application password for PowerShell to use 
+the SMTP account.
 .PARAMETER smtpPassword
 Password for SMTP user
 .PARAMETER cellNumberToText
@@ -66,16 +67,17 @@ Function Send-TextMessage {
         [string]$textMessage
     )
     Switch ($provider){
-        Verizon {$domain='vtext.com'}
-        ATT {$domain='txt.att.net'}
-        TMobile{$domain='tmomail.net'}
-        Sprint{$domain='messaging.sprintpcs.com'}
-        VirginMobile{$domain='vmobl.com'}
-        Tracfone{$domain='mmst5.tracfone.com'}
-        MetroPCS{$domain='mymetropcs.com'}
-        BoostMobile{$domain='sms.myboostmobile.com'}
-        Cricket{$domain='sms.cricketwireless.net'}
+        Verizon {$domain='vtext.com'; break}
+        ATT {$domain='txt.att.net'; break}
+        TMobile{$domain='tmomail.net'; break}
+        Sprint{$domain='messaging.sprintpcs.com'; break}
+        VirginMobile{$domain='vmobl.com'; break}
+        Tracfone{$domain='mmst5.tracfone.com'; break}
+        MetroPCS{$domain='mymetropcs.com'; break}
+        BoostMobile{$domain='sms.myboostmobile.com'; break}
+        Cricket{$domain='sms.cricketwireless.net'; break}
     }
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     $smtpPassword = ConvertTo-SecureString $smtpPassword -AsPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential($smtpUserName,$smtpPassword)
     $mailValues = @{
@@ -90,4 +92,3 @@ Function Send-TextMessage {
     }
     Send-MailMessage @mailValues
 }
-
