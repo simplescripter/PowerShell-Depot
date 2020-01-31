@@ -1,29 +1,30 @@
 ﻿Function Search-Subnet {
-    $subnet = '172.16.0.'
-    $hosts = 9..11
-    $dhcpServer = 'LON-DC1'
+    Param(
+        [string]$subnet = '172.16.0.',
+        [array]$hosts = 8..11
+    )
     ForEach($hostIP in $hosts){
         # NOTE: because we're connecting to WMI using an IP, it's a good idea
         # to make sure you've DNS reverse lookup records for the machine.  Otherwise,
         # Kerberos auth will take MUCH longer for each IP
         $computer = "$subnet$hostIP"
-        $pingResult = Test-NetConnection -ComputerName $computer
+        $pingResult = Test-NetConnection -ComputerName $computer -WarningAction SilentlyContinue
         If($pingResult.PingSucceeded){
             # Add error handling
             # Get-WMIObject query assumes a single physical NIC
             $nic = Get-WmiObject -Class Win32_NetworkAdapterConfiguration -ComputerName $computer -Filter "IPEnabled=$true"
             $properties = @{
                 PingSucceeded = $pingResult.PingSucceeded
-                IP = $pingResult.RemoteAddress
-                Name = $nic.__SERVER
-                MACaddress = $nic.MACAddress
+                IPAddress = $pingResult.RemoteAddress
+                hostName = $nic.PSComputerName
+                ClientId = $($nic.MACAddress -replace ':','-')
             }
         }<#Else{
             $properties = @{
                 PingSucceeded = $pingResult.PingSucceeded
-                IP = $pingResult.RemoteAddress
-                Name = "UNAVAILABLE"
-                MACaddress = "UNAVAILABLE"
+                IPAddress = $pingResult.RemoteAddress
+                hostName = "UNAVAILABLE"
+                ClientId = "UNAVAILABLE"
             }
         }#>
         $obj = New-Object -TypeName PSObject -Property $properties
