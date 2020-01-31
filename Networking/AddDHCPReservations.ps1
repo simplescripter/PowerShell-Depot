@@ -1,3 +1,4 @@
+﻿# Example: .\AddDHCPReservations.ps1 -DHCPServer 'LON-DC1' -DHCPScopeId '172.16.0.0'
 Param(
     [string]$subnet = '172.16.0.',
     [array]$hosts = 9..11,
