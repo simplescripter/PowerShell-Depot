@@ -28,6 +28,7 @@
         }#>
         $obj = New-Object -TypeName PSObject -Property $properties
         Write-Output $obj
+    }
 }
 
 Search-Subnet | Add-DhcpServerv4Reservation -ComputerName 'LON-DC1' -ScopeId '172.16.0.0'
