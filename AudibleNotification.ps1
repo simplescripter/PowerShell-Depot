@@ -1,5 +1,5 @@
 ﻿$obj = New-Object System.Media.SoundPlayer
-$obj.SoundLocation = "D:\Users\Shawn.ELYSIUM\Documents\Classes\Scripting Reference\PowerShell\psinvaders\samples\insertcoin.wav"
+$obj.SoundLocation = "D:\Users\Shawn.ELYSIUM\Documents\Scripting Reference\PowerShell\psinvaders\samples\insertcoin.wav"
 $ok = $false
 Do{
     Sleep 5
