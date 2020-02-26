@@ -1,4 +1,4 @@
-﻿# Look for Az module and, if present, load the equivalent -AzureRm aliases:
+# Look for Az module and, if present, load the equivalent -AzureRm aliases:
 
 If(Get-Module -ListAvailable Az.*){
     Enable-AzureRmAlias

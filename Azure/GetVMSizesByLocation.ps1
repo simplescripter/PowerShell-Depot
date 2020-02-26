@@ -1,4 +1,4 @@
-﻿Function Get-AzureVmSizeByLocation {
+Function Get-AzureVmSizeByLocation {
 <#
     .SYNOPSIS
         Given a VM size, displays the Azure regions where that VM may be hosted in the current subscription  
