@@ -1,5 +1,5 @@
 ﻿$net = "162.168.205."
-130..157 | %{
+131..157 | %{
     Do{
         If($name = Resolve-DnsName "$net$_" -Type PTR -ErrorAction SilentlyContinue){
             break
