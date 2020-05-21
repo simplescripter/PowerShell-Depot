@@ -1,4 +1,4 @@
-﻿# For MOC course 20740, run this code on LON-DC1 to prepare the storage environment for failover clustering
+﻿# For MOC course 20740 Module 8, run this code on LON-DC1 to prepare the storage environment for failover clustering
 
 # Setup LON-DC1 as an iSCSI Target server with 3 disks for LON-SVR2 and LON-SVR3:
 Install-WindowsFeature FS-iSCSITarget-Server
