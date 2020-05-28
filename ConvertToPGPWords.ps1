@@ -1,4 +1,9 @@
 Function ConvertTo-PgpWordString {
+    # For example, the following command:
+    # 'E582 94F2 E9A2 2748 6E8B 061B 31CC 528F D7FA 3F19' | ConvertTo-PgpWordString
+    # should produce this output:
+    # topmost Istanbul Pluto vagabond treadmill Pacific brackish dictator goldfish Medusa afflict bravado chatter revolver Dupont midsummer stopwatch whimsical cowbell bottomless
+
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
@@ -148,8 +153,7 @@ Function ConvertTo-PgpWordString {
     } # end Begin block
     
     Process {
-        Clean-Hex $hexString
-        $byteArray = Convert-HexToByteArray -hexString $hexString
+        $byteArray = Convert-HexToByteArray -hexString (Clean-Hex $hexString)
         $wordArray = @()
 
         For($i = 0;$i -lt $byteArray.Count;$i++){
