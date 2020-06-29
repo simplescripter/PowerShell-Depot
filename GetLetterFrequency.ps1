@@ -5,7 +5,8 @@
         [string]$string
     )
     [string]$string = $string -replace"\W","" # Remove non-word characters from the string
-    [string]$string = $string -replace"\d","" #Remove digits from the string
+    [string]$string = $string -replace"\d","" # Remove digits from the string
+    [string]$string = $string.ToLower() # Convert string to lower case
     [int]$TotalChars = $string.Length
     ForEach($letter in 97..122){
         [char]$letter = $letter
@@ -18,3 +19,4 @@
         New-Object -TypeName PSObject -Property $properties
     }
 }
+    
