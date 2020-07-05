@@ -14,7 +14,7 @@ Function Get-PwnedPassword {
     $results = Invoke-RestMethod -Uri https://api.pwnedpasswords.com/range/$prefix
     # Results are a single long string. Need to break out the individual hashes and number of matches:
     $results =  ($results | Select-String  "(\w{35}:\d{1,})" -AllMatches).Matches.Value
-    $unmatched = $true  
+    $unmatched = $true
     ForEach($entry in $results){
         $entry = $entry.split(':')
         If($entry[0] -eq $suffix){
@@ -24,7 +24,7 @@ Function Get-PwnedPassword {
         }
     }
     If($unmatched){
-        Write-Host 'Congratulations, that password does not appear to be exposed' -ForegroundColor gray -BackgroundColor White
+        Write-Host 'Congratulations, that password does not appear to be exposed' -ForegroundColor Black -BackgroundColor White
     }
 }
 
