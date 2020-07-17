@@ -5,7 +5,7 @@
 
 $start = Get-Date "1/1/2016" # 2016 was a leap year, so we'll use it to get all possible birthdays
 Remove-Variable daysOfYear -ErrorAction SilentlyContinue
-# Using an a .NET arraylist because it's faster than a fixed array...
+# Using a .NET arraylist because it's faster than a fixed array...
 $daysOfYear = New-Object System.Collections.ArrayList
 For($i = 0; $i -le 366;$i++){
     $daysOfYear.add((Get-Date ($start.AddDays($i)) -Format 'MMMM dd')) | Out-Null
