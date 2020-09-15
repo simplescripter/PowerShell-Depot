@@ -10,7 +10,7 @@
     }
 }
 
-PingSweep | ForEach{
+PingSweep | ForEach-Object {
     $ip = $_.Split(",")[0]
     $status = $_.Split(",")[1]
     If($status -eq 'ONLINE'){

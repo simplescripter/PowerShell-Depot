@@ -1,6 +1,6 @@
 ﻿Function IsAdmin
 {
-    $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()` 
+    $IsAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()`
         ).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator") 
     Return $IsAdmin
 }
@@ -19,7 +19,7 @@ Function InstallWinRMCertificateForVM()
 	}
 
     Write-Host "Installing WinRM Certificate for remote access: $CloudServiceName $Name"
-	$WinRMCert = (Get-AzureVM -ServiceName $CloudServiceName -Name $Name | select -ExpandProperty vm).DefaultWinRMCertificateThumbprint
+	$WinRMCert = (Get-AzureVM -ServiceName $CloudServiceName -Name $Name | Select-Object -ExpandProperty vm).DefaultWinRMCertificateThumbprint
 	$AzureX509cert = Get-AzureCertificate -ServiceName $CloudServiceName -Thumbprint $WinRMCert -ThumbprintAlgorithm sha1
 
 	$certTempFile = [IO.Path]::GetTempFileName()

@@ -1,6 +1,5 @@
 # Function to fetch the ReleaseId value from one or more Windows systems using WMI and the STDREG provider
 # (Windows clients don't have PowerShell remoting enabled by default, but WMI may be available)
-
 Function Get-OSReleaseID {
     [CmdletBinding()]
     Param (
