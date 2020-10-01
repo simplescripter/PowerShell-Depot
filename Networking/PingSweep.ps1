@@ -1,4 +1,4 @@
-﻿Workflow PingSweep{
+﻿WorkFlow PingSweep{
     $computers = @()
     For ($i = 1; $i -le 254; $i++){$computers += "192.168.0.$i"}
     ForEach -Parallel ($computer in $computers){
@@ -10,7 +10,7 @@
     }
 }
 
-PingSweep | ForEach-Object {
+PingSweep | ForEach{
     $ip = $_.Split(",")[0]
     $status = $_.Split(",")[1]
     If($status -eq 'ONLINE'){
