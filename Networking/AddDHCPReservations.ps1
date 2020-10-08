@@ -15,7 +15,7 @@ Function Search-Subnet {
     )
     ForEach($hostIP in $hosts){
         # NOTE: because we're connecting to WMI using an IP, it's a good idea
-        # to make sure you've DNS reverse lookup records for the machine.  Otherwise,
+        # to make sure you've registered DNS reverse lookup records for the machine.  Otherwise,
         # Kerberos auth will take MUCH longer for each IP
         $computer = "$subnet$hostIP"
         $pingResult = Test-NetConnection -ComputerName $computer -WarningAction SilentlyContinue
