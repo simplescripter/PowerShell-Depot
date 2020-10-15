@@ -1,5 +1,5 @@
 ﻿#$systems = Get-Content C:\script\systems.txt
-$systems = 'the-shape'
+$systems = 'localhost'
 $skylakeList = Invoke-WebRequest 'http://ark.intel.com/products/codename/37572/Skylake#@All'
 ForEach ($system in $systems){
     $processor = ((Get-WMIObject win32_Processor -ComputerName $system).name) `
