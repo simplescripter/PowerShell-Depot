@@ -1,3 +1,5 @@
+
+
 Function Get-AzureVmSizeByLocation {
 <#
     .SYNOPSIS
@@ -29,19 +31,15 @@ Function Get-AzureVmSizeByLocation {
         [string]$location        # optional
     )
 
-    # Look for Az module and, if present, load the equivalent -AzureRm aliases:
-    If(Get-Module -ListAvailable Az.*){
-        Enable-AzureRmAlias
-    }
-
     # Check for Azure login:
+    Write-Progress -Activity 'Checking for Azure logon...'
     Try{
-        Get-AzureRmContext -ErrorAction Stop | Out-Null
+        Get-AzContext -ErrorAction Stop | Out-Null
     }Catch{
-        Add-AzureRmAccount
+        Add-AzAccount
     }
-    
-    $locations = Get-AzureRmLocation | Select-Object -ExpandProperty location
+    Write-Progress -Activity 'Fetching Azure locations available to your subscription...'
+    $locations = Get-AzLocation | Select-Object -ExpandProperty location
     If($PSBoundParameters.ContainsKey('location')){
         If($locations -contains $location){
             $locations = $location
@@ -50,6 +48,7 @@ Function Get-AzureVmSizeByLocation {
         }
     }
     $locationCount = 0
+    Write-Progress -Activity 'Fetching list of all possible VM SKUs...'
     $allVmSKUs = Get-AzComputeResourceSku | Where-Object {$_.ResourceType -like 'virtualMachines' -and $_.Restrictions.ReasonCode -ne 'NotAvailableForSubscription'}
     ForEach ($location in $locations){
         $locationCount++
