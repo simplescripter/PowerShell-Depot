@@ -3,6 +3,7 @@ Function Get-PwnedPassword {
         [Parameter(Mandatory=$true)]
         [string]$string
     )
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
     $stringBuilder = New-Object System.Text.StringBuilder
     $byteArray = [System.Security.Cryptography.HashAlgorithm]::Create('SHA1').ComputeHash([System.Text.Encoding]::UTF8.GetBytes($string))
     ForEach ($byte in $byteArray) {
