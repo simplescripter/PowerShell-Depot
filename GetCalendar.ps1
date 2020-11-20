@@ -1,4 +1,6 @@
 ﻿Function Get-Calendar {  
+    [reflection.assembly]::loadwithpartialname("System.Windows.Forms") | Out-Null
+    [reflection.assembly]::loadwithpartialname("System.Drawing") | Out-Null
 
     $form = New-Object Windows.Forms.Form  
     $form.Text = "Select the date ranges from the Calendar and press Enter"  
